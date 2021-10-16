@@ -3,4 +3,5 @@
 ### Tech Stack
 
 - express
+- body-parser
 - ejs template
