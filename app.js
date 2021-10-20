@@ -6,6 +6,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 let listItems = ["Buy Food", "Prepare Dinner"];
+let workItems = [];
 
 app.get("/", function (req, res) {
   let today = new Date();
@@ -61,15 +62,31 @@ app.get("/", function (req, res) {
   // } else if (currentDay === 6) {
   //   day = "Saturday";
   // }
-  res.render("list", { kindOfDay: day, newListItems: listItems });
+  res.render("list", { listTitle: day, newListItems: listItems });
 });
 
 app.post("/", (req, res) => {
   let listItem = req.body.listItem;
 
-  listItems.push(listItem);
+  if (req.body.list === "Work") {
+    workItems.push(listItem);
+    res.redirect("/work");
+  } else {
+    listItems.push(listItem);
+    res.redirect("/");
+  }
+
   //console.log(listItem);
-  res.redirect("/");
+});
+
+app.get("/work", (req, res) => {
+  res.render("list", { listTitle: "Work List", newListItems: workItems });
+});
+
+app.post("/work", (req, res) => {
+  let item = req.body.listItem;
+  workItems.push(item);
+  res.redirect("/work");
 });
 
 app.listen(3000, function () {
