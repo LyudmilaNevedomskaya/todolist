@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 let listItems = ["Buy Food", "Prepare Dinner"];
