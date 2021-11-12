@@ -30,22 +30,24 @@ const item3 = new ListItem({
 });
 
 const defaultItems = [item1, item2, item3];
-
-ListItem.insertMany(defaultItems, function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Succesfully saved default items into DB");
-  }
-})
-
-// const listItems = ["Buy Food", "Prepare Dinner"];
 // const workItems = [];
 
 app.get("/", function (req, res) {
   let day = date.getDate();
-
-  res.render("list", { listTitle: day, newListItems: listItems });
+  ListItem.find({}, function (err, listItems) {
+    if (listItems === 0) {
+      ListItem.insertMany(defaultItems, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Succesfully saved default items into DB");
+        }
+      })
+      res.redirect("/");
+    } else {
+      res.render("list", { listTitle: day, newListItems: listItems });
+    }
+  })
 });
 
 app.post("/", (req, res) => {
