@@ -30,7 +30,15 @@ const item3 = new ListItem({
 });
 
 const defaultItems = [item1, item2, item3];
-// const workItems = [];
+
+const listSchema = {
+  name: String,
+  items: [listItemsSchema]
+};
+
+const List = mongoose.model("List", listSchema);
+
+
 
 app.get("/", function (req, res) {
   let day = date.getDate();
@@ -89,15 +97,42 @@ app.post("/delete", (req, res) => {
   });
 });
 
-app.get("/work", (req, res) => {
-  res.render("list", { listTitle: "Work List", newListItems: workItems });
-});
+// app.get("/work", (req, res) => {
+//   res.render("list", { listTitle: "Work List", newListItems: workItems });
+// });
 
-app.post("/work", (req, res) => {
-  let item = req.body.listItem;
-  workItems.push(item);
-  res.redirect("/work");
-});
+app.get("/:id", (req, res) => {
+  //console.log(req.params.id);
+  const customListName = req.params.id;
+
+  List.findOne({name:customListName}, function(err, foundList) {
+    if(!err) {
+      if (!foundList) {
+        //console.log("NOOOOOOOOOO");
+        //CREATE A NEW LIST///////
+        const list = new List({
+          name: customListName,
+          items: defaultItems
+        });
+      
+        list.save();
+        res.redirect("/"+customListName);
+      } else {
+        //console.log("FIND");
+        //SHOW AN EXISTING LIST
+        res.render("list", {listTitle: foundList.name, newListItems: foundList.items })
+      }
+    }
+  })
+
+  
+
+})
+// app.post("/work", (req, res) => {
+//   let item = req.body.listItem;
+//   workItems.push(item);
+//   res.redirect("/work");
+// });
 
 app.listen(3000, function () {
   console.log("Server started on port 3000.");
