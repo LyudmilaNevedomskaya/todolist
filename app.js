@@ -71,6 +71,24 @@ app.post("/", (req, res) => {
   // }
 });
 
+app.post("/delete", (req, res) => {
+  //console.log(req.body.checkbox);
+  const checkedItemId = req.body.checkbox;
+
+  // ListItem.deleteOne({_id: checkedItemId}, function(err) {
+  //   if(err) {
+  //     console.log(err);
+  //   } else {
+  //     res.redirect("/");
+  //   }
+  // })
+  ListItem.findByIdAndRemove(checkedItemId, function(err) {
+    if (!err) {
+      res.redirect("/");
+    }
+  });
+});
+
 app.get("/work", (req, res) => {
   res.render("list", { listTitle: "Work List", newListItems: workItems });
 });
