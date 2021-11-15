@@ -1,5 +1,5 @@
 ## Simple To Do List
-### It has two separate pages: one with current day, another /work route with Work List. You can add tasks and cross out finished ones.
+### The user can add as many lists as he wants by adding a new route (/work, or /holiday), add new tasks and delete them when needed.
 
 ![work route](https://github.com/LyudmilaNevedomskaya/todolist/blob/master/docs/Screenshot%20(9).png)
 ![main page](https://github.com/LyudmilaNevedomskaya/todolist/blob/master/docs/Screenshot%20(10).png)
@@ -10,3 +10,5 @@
 - express
 - body-parser
 - ejs template
+- lodash
+- mongoose
